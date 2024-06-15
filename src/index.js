@@ -4,17 +4,17 @@ const mongoose = require('mongoose');
 const app = express();
 app.use(express.json());
 const port = 3000;
-mongoose.connect('mongodb+srv://diogodsxavier:BsJhbLXa9I4OtJ7P@cluster0.lhhyff3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
 
-const Film = mongoose.model('film', {
+const Film = mongoose.model('Film', {
     title: String,
     description: String,
     image_url: String,
     trailer_url: String,
 });
 
-app.get('/', (req, res) => {
-    res.send('Hello world')
+app.get('/', async (req, res) => {
+    const films = await Film.find();
+    res.send(films);
 });
 
 app.post('/', async (req, res) => {
@@ -30,5 +30,6 @@ app.post('/', async (req, res) => {
 });
 
 app.listen(port, () => {
+    mongoose.connect('mongodb+srv://diogodsxavier:7gc9SqH6EzTAZOgZ@cluster0.lhhyff3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
     console.log('app running');
 });
