@@ -12,10 +12,36 @@ const Film = mongoose.model('Film', {
     trailer_url: String,
 });
 
+// Lendo
+
 app.get('/', async (req, res) => {
     const films = await Film.find();
-    res.send(films);
+    return res.send(films);
 });
+
+// Delete 
+
+app.delete('/:id', async (req, res) => {
+    const film = await Film.findByIdAndDelete(req.params.id);
+    return res.send(film);
+});
+
+// Update
+
+app.put('/:id', async (req, res) => {
+    const film = await Film.findByIdAndUpdate(req.params.id, {
+        title: req.body.title,
+        description: req.body.description,
+        image_url: req.body.umage_url,
+        trailer_url: req.body.trailer_url       
+    }, {
+        new: true
+    });
+
+    return res.send(film);
+});
+
+// List
 
 app.post('/', async (req, res) => {
     const film = new Film({
@@ -26,10 +52,10 @@ app.post('/', async (req, res) => {
     });
 
     await film.save();
-    res.send(film);
+    return res.send(film);
 });
 
 app.listen(port, () => {
-    mongoose.connect('mongodb+srv://diogodsxavier:7gc9SqH6EzTAZOgZ@cluster0.lhhyff3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+    mongoose.connect('mongodb+srv://diogodsxavier:<password>@cluster0.lhhyff3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
     console.log('app running');
 });
